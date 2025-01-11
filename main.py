@@ -7,7 +7,11 @@ from kivy.uix.boxlayout import BoxLayout #Layout em caixas permite organizar os 
 
 from instructions import txt_instruction, txt_test1, txt_sits, txt_test3
  
- 
+#Variaveis Globais
+age = 0 #idade
+name = '' #nome
+p1, p2, p3 = 0, 0, 0 #pulsação 1, 2 e 3 igual a zero
+
 class InstrScr(Screen): 
    def __init__(self, **kwargs):
        super().__init__(**kwargs)
@@ -38,6 +42,9 @@ class InstrScr(Screen):
        self.add_widget(outer)
 
    def next(self): #crição do metodo next, responsavel por realizar a troca de ecrã
+        global name, age #indicamos as variaveis que queremos utilizar fora do metodo
+        name = self.in_name.text # atualização do valor da variavel com o nome preenchido pelo utilizador
+        age = self.in_age.text # atualização do valor da variavel com a idade preenchida pelo utilizador
         self.manager.current = 'pulse1'
  
  
@@ -65,6 +72,8 @@ class PulseScr(Screen):
        self.add_widget(outer)
  
    def next(self): #crição do metodo next, responsavel por realizar a troca de ecrã
+       global p1
+       p1 = self.in_result.text
        self.manager.current = 'sits'
 
 class CheckSits(Screen):
@@ -118,6 +127,9 @@ class PulseScr2(Screen):
 
  
    def next(self): #crição do metodo next, responsavel por realizar a troca de ecrã
+       global p2, p3
+       p2 = self.in_result1.text
+       p3 = self.in_result2.text
        self.manager.current = 'result'
 
 class Result(Screen):
@@ -125,7 +137,7 @@ class Result(Screen):
        super().__init__(**kwargs)
  
        self.outer = BoxLayout(orientation='vertical', padding=8, spacing=8)
-       self.instr = Label(text = '')
+       self.instr = Label(text = 'QUEIZY')
        self.outer.add_widget(self.instr)
  
        self.add_widget(self.outer)
