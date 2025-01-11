@@ -1,5 +1,5 @@
 from kivy.app import App #Importa a classe App responsável por definir como uma aplicacao móvel
-from kivy.uix.screenmanager import Screen #Screen permite a criacao de Ecras
+from kivy.uix.screenmanager import ScreenManager, Screen #Screen permite a criacao de Ecras
 from kivy.uix.label import Label #Label permite renderizar texto
 from kivy.uix.button import Button #Permite renderizar botoes
 from kivy.uix.textinput import TextInput #Permite renderizar um objeto que recebe texto do utilizador
@@ -19,7 +19,8 @@ class InstrScr(Screen):
        lbl2 = Label(text='Enter your age:', halign='right')
  
        self.in_age = TextInput(text='0', multiline=False)
-       self.btn = Button(text='Start', size_hint=(0.3, 0.2), pos_hint={'center_x': 0.5}) 
+       self.btn = Button(text='Start', size_hint=(0.3, 0.2), pos_hint={'center_x': 0.5})
+       self.btn.on_press = self.next
  
        line1 = BoxLayout(size_hint=(0.8, None), height='30sp') 
        line2 = BoxLayout(size_hint=(0.8, None), height='30sp')
@@ -35,6 +36,9 @@ class InstrScr(Screen):
        outer.add_widget(self.btn)
  
        self.add_widget(outer)
+
+   def next(self): #crição do metodo next, responsavel por realizar a troca de ecrã
+        self.manager.current = 'pulse1'
  
  
 class PulseScr(Screen):
@@ -51,7 +55,7 @@ class PulseScr(Screen):
        line.add_widget(self.in_result)
  
        self.btn = Button(text='Next', size_hint=(0.3, 0.2), pos_hint={'center_x': 0.5})
-
+       self.btn.on_press = self.next
  
        outer = BoxLayout(orientation='vertical', padding=8, spacing=8)
        outer.add_widget(instr)
@@ -60,6 +64,8 @@ class PulseScr(Screen):
  
        self.add_widget(outer)
  
+   def next(self): #crição do metodo next, responsavel por realizar a troca de ecrã
+       self.manager.current = 'sits'
 
 class CheckSits(Screen):
    def __init__(self, **kwargs):
@@ -68,14 +74,16 @@ class CheckSits(Screen):
        instr = Label(text=txt_sits)
  
        self.btn = Button(text='Next', size_hint=(0.3, 0.2), pos_hint={'center_x': 0.5})
-
+       self.btn.on_press = self.next
  
        outer = BoxLayout(orientation='vertical', padding=8, spacing=8)
        outer.add_widget(instr)
        outer.add_widget(self.btn)
  
        self.add_widget(outer)
- 
+
+   def next(self): #crição do metodo next, responsavel por realizar a troca de ecrã
+       self.manager.current = 'pulse2'
  
 class PulseScr2(Screen):
    def __init__(self, **kwargs):
@@ -98,7 +106,7 @@ class PulseScr2(Screen):
        line2.add_widget(self.in_result2)
  
        self.btn = Button(text='Finalize', size_hint=(0.3, 0.2), pos_hint={'center_x': 0.5})
-
+       self.btn.on_press = self.next
  
        outer = BoxLayout(orientation='vertical', padding=8, spacing=8)
        outer.add_widget(instr)
@@ -109,6 +117,9 @@ class PulseScr2(Screen):
        self.add_widget(outer)
 
  
+   def next(self): #crição do metodo next, responsavel por realizar a troca de ecrã
+       self.manager.current = 'result'
+
 class Result(Screen):
    def __init__(self, **kwargs):
        super().__init__(**kwargs)
@@ -122,6 +133,13 @@ class Result(Screen):
  
 class HeartCheck(App):
     def build(self): #build é o método para renderizacao grafica em Kivy
-        return Result()
+        sm = ScreenManager()
+        sm.add_widget(InstrScr(name = 'instr'))
+        sm.add_widget(PulseScr(name = 'pulse1'))
+        sm.add_widget(CheckSits(name = 'sits'))
+        sm.add_widget(PulseScr2(name = 'pulse2'))
+        sm.add_widget(Result(name = 'result'))
+        
+        return sm
  
 HeartCheck().run()
