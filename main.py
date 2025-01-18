@@ -6,6 +6,8 @@ from kivy.uix.textinput import TextInput #Permite renderizar um objeto que receb
 from kivy.uix.boxlayout import BoxLayout #Layout em caixas permite organizar os objetos no ecra 
 
 from instructions import txt_instruction, txt_test1, txt_sits, txt_test3
+
+from ruffier import test
  
 #Variaveis Globais
 age = 0 #idade
@@ -137,10 +139,14 @@ class Result(Screen):
        super().__init__(**kwargs)
  
        self.outer = BoxLayout(orientation='vertical', padding=8, spacing=8)
-       self.instr = Label(text = 'QUEIZY')
+       self.instr = Label(text = '')
        self.outer.add_widget(self.instr)
  
        self.add_widget(self.outer)
+
+   def before(self):
+        global name
+        self.instr.text = name + '\n' + test(P1, P2, P3, age)
 
  
 class HeartCheck(App):
